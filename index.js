@@ -32,7 +32,10 @@ bot.on('text', async (ctx) => {
 
     ctx.reply(formatData);
 
-    console.log(data[0][0].country);
+    console.log(`
+Имя: ${ctx.message.from.first_name} 
+ID: ${ctx.message.from.id}
+Запрошенная страна: ${data[0][0].country}`);
   } catch {
     ctx.reply(`
 Ошибка: такой страны не существует.
