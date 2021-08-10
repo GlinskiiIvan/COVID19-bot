@@ -6,7 +6,7 @@ const COUNTRY_LIST = require('./constants');
 const { login } = require('telegraf/typings/button');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
-bot.start((ctx) => {
+bot.start((ctx) =>
   ctx.reply(
     `
 Привет ${ctx.message.from.first_name}!
@@ -16,13 +16,7 @@ bot.start((ctx) => {
 `,
     Markup.keyboard(['Russia', 'Kazakhstan', 'Belarus', 'China']).resize()
   )
-
-  console.log(`
-  Новый пользователь!
-  Имя: ${ctx.message.from.first_name} 
-  ID: ${ctx.message.from.id}
-    `)  
-});
+);
 bot.help((ctx) => ctx.reply(COUNTRY_LIST));
 // bot.on('sticker', (ctx) => ctx.reply('👍'));
 bot.on('text', async (ctx) => {
