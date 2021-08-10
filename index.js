@@ -5,6 +5,9 @@ const api = require('covid19-api');
 const COUNTRY_LIST = require('./constants');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
+
+bot.command('help', (ctx) => ctx.reply(COUNTRY_LIST));
+
 bot.start((ctx) => {
   ctx.reply(
     `
