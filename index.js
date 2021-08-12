@@ -19,32 +19,56 @@ bot.start((ctx) => {
     Markup.keyboard(['Russia', 'Kazakhstan', 'Belarus', 'China']).resize()
   );
 
-  console.log(`
+  // Notification of a new user in my telegram
+  bot.telegram.sendMessage(
+    -523052590,
+    `
 Новый пользователь!
 Имя: ${ctx.message.from.first_name}
+Имя в телеграме: @${ctx.message.from.username}
 ID:  ${ctx.message.from.id}
-  `);
+    `
+  );
 });
 bot.help((ctx) => ctx.reply(COUNTRY_LIST));
-// bot.on('sticker', (ctx) => ctx.reply('👍'));
+
 bot.on('text', async (ctx) => {
   let data = {};
+  let worldData = {};
+  let tableCountrys = {};
   try {
     data = await api.getReportsByCountries(ctx.message.text);
+    worldData = await api.getReports();
+    tableCountrys = worldData[0][0].table[0];
 
     let formatData = `
 Страна: ${data[0][0].country}
-Случаев: ${data[0][0].cases}
-Смертей: ${data[0][0].deaths}
-Выздоровевших: ${data[0][0].recovered}
+
+<i>Новых случаев:</i> <b>${
+      tableCountrys.find((item) => item.Country === ctx.message.text).NewCases
+    }</b>
+<i>Новых смертей:</i> <b>${
+      tableCountrys.find((item) => item.Country === ctx.message.text).NewDeaths
+    }</b>
+<i>Новых выздоровевших:</i> <b>${
+      tableCountrys.find((item) => item.Country === ctx.message.text).NewRecovered
+    }</b>
+
+<i>Всего случаев:</i> <b>${data[0][0].cases}</b>
+<i>Всего смертей:</i> <b>${data[0][0].deaths}</b>
+<i>Всего выздоровевших:</i> <b>${data[0][0].recovered}</b>
     `;
 
-    ctx.reply(formatData);
+    ctx.replyWithHTML(formatData);
 
-    console.log(`
+    bot.telegram.sendMessage(
+      -523052590,
+      `
 Имя: ${ctx.message.from.first_name} 
+Имя в телеграме: @${ctx.message.from.username}
 ID: ${ctx.message.from.id}
-Запрошенная страна: ${data[0][0].country}`);
+Запрошенная страна: ${data[0][0].country}`
+    );
   } catch {
     ctx.reply(`
 Ошибка: такой страны не существует.
@@ -56,5 +80,4 @@ ID: ${ctx.message.from.id}
 bot.hears('hi', (ctx) => ctx.reply(`Привет ${ctx.message.from.first_name}`));
 bot.launch();
 
-// eslint-disable-next-line no-console
 console.log('Бот запущен');
