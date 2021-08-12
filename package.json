@@ -21,6 +21,7 @@
     "prettier": "^2.3.2"
   },
   "dependencies": {
+    "country-emoji": "^1.5.6",
     "covid19-api": "^1.2.1",
     "dotenv": "^10.0.0",
     "telegraf": "^4.4.1"

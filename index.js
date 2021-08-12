@@ -3,6 +3,7 @@ require('dotenv').config();
 const { Telegraf, Markup } = require('telegraf');
 const api = require('covid19-api');
 const COUNTRY_LIST = require('./constants');
+const { flag, name } = require('country-emoji');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -13,8 +14,9 @@ bot.start((ctx) => {
     `
 Привет ${ctx.message.from.first_name}!
 Узнай статистику по COVID-19.
-Для этого надо ввести название интересующей страны на английском.
+Для этого надо ввести название интересующей страны на английском или отправить emoji флаг.
 Посмотреть список всех стран можно с помощью команды /help.
+Из-за обработки большого количества информации ответ может приходить с небольшой задержкой)
 `,
     Markup.keyboard(['Russia', 'Kazakhstan', 'Belarus', 'China']).resize()
   );
@@ -36,30 +38,45 @@ bot.on('text', async (ctx) => {
   let data = {};
   let worldData = {};
   let tableCountrys = {};
+  let flagEmoji;
+  let country;
+
+  if (name(ctx.message.text) != undefined) {
+    country = name(ctx.message.text);
+  } else {
+    country = ctx.message.text;
+  }
+
   try {
-    data = await api.getReportsByCountries(ctx.message.text);
+    data = await api.getReportsByCountries(country);
     worldData = await api.getReports();
     tableCountrys = worldData[0][0].table[0];
+    flagEmoji = await flag(country);
 
     let formatData = `
-Страна: ${data[0][0].country}
+Страна: ${data[0][0].country} ${flagEmoji}
 
 <i>Новых случаев:</i> <b>${
-      tableCountrys.find((item) => item.Country === ctx.message.text).NewCases
+      tableCountrys.find((item) => item.Country.toLowerCase() === country.toLowerCase()).NewCases
     }</b>
 <i>Новых смертей:</i> <b>${
-      tableCountrys.find((item) => item.Country === ctx.message.text).NewDeaths
+      tableCountrys.find((item) => item.Country.toLowerCase() === country.toLowerCase()).NewDeaths
     }</b>
 <i>Новых выздоровевших:</i> <b>${
-      tableCountrys.find((item) => item.Country === ctx.message.text).NewRecovered
+      tableCountrys.find((item) => item.Country.toLowerCase() === country.toLowerCase())
+        .NewRecovered
     }</b>
 
 <i>Всего случаев:</i> <b>${data[0][0].cases}</b>
 <i>Всего смертей:</i> <b>${data[0][0].deaths}</b>
 <i>Всего выздоровевших:</i> <b>${data[0][0].recovered}</b>
+
+<i>Население:</i> <b>${
+      tableCountrys.find((item) => item.Country.toLowerCase() === country.toLowerCase()).Population
+    }</b>
     `;
 
-    ctx.replyWithHTML(formatData);
+    await ctx.replyWithHTML(formatData);
 
     bot.telegram.sendMessage(
       -523052590,
@@ -77,6 +94,7 @@ ID: ${ctx.message.from.id}
     console.log('Ошибка');
   }
 });
+
 bot.hears('hi', (ctx) => ctx.reply(`Привет ${ctx.message.from.first_name}`));
 bot.launch();
 
