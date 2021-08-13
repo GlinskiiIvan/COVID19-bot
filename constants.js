@@ -1,49 +1,52 @@
 const COUNTRY_LIST = `
-afghanistan, albania, algeria, andorra, angola, anguilla, antigua-and-barbuda, argentina, armenia, aruba, australia, austria, azerbaijan
+Afghanistan, Albania, Algeria, Andorra, Angola, Anguilla, Antigua and Barbuda, Argentina, Armenia, Aruba, Australia, Austria, Azerbaijan
 
-bahamas, bahrain, bangladesh, barbados, belarus, belgium, belize, benin, bermuda, bhutan, bolivia, bosnia-and-herzegovina, botswana, brazil, british-virgin-islands, brunei-darussalam, bulgaria, burkina-faso, burundi
+Bahamas, Bahrain, Bangladesh, Barbados, Belarus, Belgium, Belize, Benin, Bermuda, Bhutan, Bolivia, Bosnia and Herzegovina, Botswana, Brazil, British Virgin Islands, Brunei, Bulgaria, Burkina Faso, Burundi
 
-cabo-verde, cambodia, cameroon, canada, caribbean-netherlands, cayman-islands, central-african-republic, chad, channel-islands, chile, china, china-hong-kong-sar, china-macao-sar, colombia, congo, costa-rica, cote-d-ivoire, croatia, cuba, curacao, cyprus, czech-republic
+CAR, Cabo Verde, Cambodia, Cameroon, Canada, Caribbean Netherlands, Cayman Islands, Chad, Channel Islands, Chile, China, Colombia, Comoros, Congo, Costa Rica, Croatia, Cuba, Curaçao, Cyprus, Czechia
 
-democratic-republic-of-the-congo, denmark, djibouti, dominica, dominican-republic
+DRC, Denmark, Diamond Princess, Djibouti, Dominica, Dominican Republic
 
-ecuador, egypt, el-salvador, equatorial-guinea, eritrea, estonia, ethiopia
+Ecuador, Egypt, El Salvador, Equatorial Guinea, Eritrea, Estonia, Eswatini, Ethiopia, Faeroe Islands, Falkland Islands, Fiji, Finland, France, French Guiana, French Polynesia
 
-faeroe-islands, falkland-islands-malvinas, fiji, finland, france, french-guiana, french-polynesia
+Gabon, Gambia, Georgia, Germany, Ghana, Gibraltar, Greece, Greenland, Grenada, Guadeloupe, Guatemala, Guinea, Guinea-Bissau, Guyana
 
-gabon, gambia, georgia, germany, ghana, gibraltar, greece, greenland, grenada, guadeloupe, guatemala, guinea, guinea-bissau, guyana
+Haiti, Honduras, Hong Kong, Hungary
 
-haiti, holy-see, honduras, hungary
+Iceland, India, Indonesia, Iran, Iraq, Ireland, Isle of Man, Israel, Italy, Ivory Coast
 
-iceland, india, indonesia, iran, iraq, ireland, isle-of-man, israel, italy
+Jamaica, Japan, Jordan
 
-jamaica, japan, jordan
+Kazakhstan, Kenya, Kuwait, Kyrgyzstan
 
-kazakhstan, kenya, kuwait, kyrgyzstan
+Laos, Latvia, Lebanon, Lesotho, Liberia, Libya, Liechtenstein, Lithuania, Luxembourg
 
-laos, latvia, lebanon, liberia, libya, liechtenstein, lithuania, luxembourg
+MS Zaandam, Macao, Madagascar, Malawi, Malaysia, Maldives, Mali, Malta, Marshall Islands, Martinique, Mauritania, Mauritius, Mayotte, Mexico, Micronesia, Moldova, Monaco, Mongolia, Montenegro, Montserrat, Morocco, Mozambique, Myanmar
 
-macedonia, madagascar, malawi, malaysia, maldives, mali, malta, martinique, mauritania, mauritius, mayotte, mexico, moldova, monaco, mongolia, montenegro, montserrat, morocco, mozambique, myanmar
+Namibia, Nepal, Netherlands, New Caledonia, New Zealand, Nicaragua, Niger, Nigeria, North Macedonia, Norway
 
-namibia, nepal, netherlands, new-caledonia, new-zealand, nicaragua, niger, nigeria, norway
+Oman
 
-oman
+Pakistan, Palestine, Panama, Papua New Guinea, Paraguay, Peru, Philippines, Poland, Portugal
 
-pakistan, panama, papua-new-guinea, paraguay, peru, philippines, poland, portugal
+Qatar
 
-qatar
+Romania, Russia, Rwanda, Réunion
 
-reunion, romania, russia, rwanda
+S. Korea, Saint Helena, Saint Kitts and Nevis, Saint Lucia, Saint Martin, Saint Pierre Miquelon, Samoa, San Marino, Sao Tome and Principe, Saudi Arabia, Senegal, Serbia, Seychelles, Sierra Leone, Singapore, Sint Maarten, Slovakia, Slovenia, Solomon Islands, Somalia, South Africa, South Sudan, Spain, Sri Lanka, St. Barth, St. Vincent Grenadines, Sudan, Suriname, Sweden, Switzerland, Syria
 
-saint-barthelemy, saint-kitts-and-nevis, saint-lucia, saint-martin, saint-vincent-and-the-grenadines, san-marino, saudi-arabia, senegal, serbia, seychelles, sierra-leone, singapore, sint-maarten, slovakia, slovenia, somalia, south-africa, south-korea, spain, sri-lanka, state-of-palestine, sudan, suriname, swaziland, sweden, switzerland, syria
+Taiwan, Tajikistan, Tanzania, Thailand, Timor-Leste, Togo, Trinidad and Tobago, Tunisia, Turkey, Turks and Caicos
 
-taiwan, tanzania, thailand, timor-leste, togo, trinidad-and-tobago, tunisia, turkey, turks-and-caicos-islands
+UAE, UK, USA, Uganda, Ukraine, Uruguay, Uzbekistan
 
-uganda uk ukraine united-arab-emirates uruguay us uzbekistan
+Vanuatu, Vatican City, Venezuela, Vietnam
 
-venezuela, viet-nam
+Wallis and Futuna, Western Sahara, World
 
-zambia, zimbabwe
+Yemen
+
+Zambia, Zimbabwe
+
 `;
 
 module.exports = COUNTRY_LIST;
