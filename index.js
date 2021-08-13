@@ -65,8 +65,6 @@ bot.on('text', async (ctx) => {
     worldData = await api.getReports();
     tableCountrys = worldData[0][0].table[0];
 
-    console.log(tableCountrys);
-
     DataNewCases = await tableCountrys.find(
       (item) => item.Country.toLowerCase() === country.toLowerCase()
     ).NewCases;
@@ -87,7 +85,7 @@ bot.on('text', async (ctx) => {
     ).TotalRecovered;
     DataTotalTests = await tableCountrys.find(
       (item) => item.Country.toLowerCase() === country.toLowerCase()
-    ).TotalTests
+    ).TotalTests;
     DataPopulation = await tableCountrys.find(
       (item) => item.Country.toLowerCase() === country.toLowerCase()
     ).Population;
