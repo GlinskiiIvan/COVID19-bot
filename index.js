@@ -10,14 +10,16 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 bot.command('help', (ctx) => ctx.reply(COUNTRY_LIST));
 
 bot.start((ctx) => {
-  ctx.reply(
+  ctx.replyWithHTML(
     `
 Привет ${ctx.message.from.first_name}!
 Узнай статистику по COVID-19.
-Для этого надо ввести название интересующей страны на английском или отправить emoji флаг.
+Для этого надо ввести название интересующей страны на английском или отправить emoji флаг(поддерживаются не все флаги поэтому лучше отправляй текст).
 Посмотреть список всех стран можно с помощью команды /help.
 Из-за обработки большого количества информации ответ может приходить с небольшой задержкой)
+Вся информация взята с сайта <b><a href="https://www.worldometers.info/">worldometers</a></b>
 `,
+    { disable_web_page_preview: true },
     Markup.keyboard(['Russia', 'Kazakhstan', 'Belarus', 'China']).resize()
   );
 
@@ -38,45 +40,64 @@ bot.on('text', async (ctx) => {
   let data = {};
   let worldData = {};
   let tableCountrys = {};
-  let flagEmoji;
   let country;
-
-  if (name(ctx.message.text) != undefined) {
-    country = name(ctx.message.text);
-  } else {
-    country = ctx.message.text;
-  }
+  let flagEmoji;
+  let DataNewCases = '-';
+  let DataNewDeaths = '-';
+  let DataNewRecovered = '-';
+  let DataPopulation = '-';
 
   try {
+    if (name(ctx.message.text) != undefined) {
+      country = name(ctx.message.text);
+    } else {
+      country = ctx.message.text;
+    }
+
+    flagEmoji = await flag(country);
+    flagEmoji = flagEmoji == undefined ? '-' : flagEmoji;
+
     data = await api.getReportsByCountries(country);
     worldData = await api.getReports();
     tableCountrys = worldData[0][0].table[0];
-    flagEmoji = await flag(country);
+
+    console.log(tableCountrys.find((item) => item.Country.toLowerCase() === country.toLowerCase()));
+
+    if (
+      tableCountrys.find((item) => item.Country.toLowerCase() === country.toLowerCase()) !=
+      undefined
+    ) {
+      DataNewCases = await tableCountrys.find(
+        (item) => item.Country.toLowerCase() === country.toLowerCase()
+      ).NewCases;
+      DataNewDeaths = await tableCountrys.find(
+        (item) => item.Country.toLowerCase() === country.toLowerCase()
+      ).NewDeaths;
+      DataNewRecovered = await tableCountrys.find(
+        (item) => item.Country.toLowerCase() === country.toLowerCase()
+      ).NewRecovered;
+      DataPopulation = await tableCountrys.find(
+        (item) => item.Country.toLowerCase() === country.toLowerCase()
+      ).Population;
+    }
 
     let formatData = `
 Страна: ${data[0][0].country} ${flagEmoji}
 
-<i>Новых случаев:</i> <b>${
-      tableCountrys.find((item) => item.Country.toLowerCase() === country.toLowerCase()).NewCases
-    }</b>
-<i>Новых смертей:</i> <b>${
-      tableCountrys.find((item) => item.Country.toLowerCase() === country.toLowerCase()).NewDeaths
-    }</b>
-<i>Новых выздоровевших:</i> <b>${
-      tableCountrys.find((item) => item.Country.toLowerCase() === country.toLowerCase())
-        .NewRecovered
-    }</b>
+<i>Новых случаев:</i> <b>${DataNewCases}</b>
+<i>Новых смертей:</i> <b>${DataNewDeaths}</b>
+<i>Новых выздоровевших:</i> <b>${DataNewRecovered}</b>
 
 <i>Всего случаев:</i> <b>${data[0][0].cases}</b>
 <i>Всего смертей:</i> <b>${data[0][0].deaths}</b>
 <i>Всего выздоровевших:</i> <b>${data[0][0].recovered}</b>
 
-<i>Население:</i> <b>${
-      tableCountrys.find((item) => item.Country.toLowerCase() === country.toLowerCase()).Population
-    }</b>
+<i>Население:</i> <b>${DataPopulation}</b>
+
+Информация взята с сайта <b><a href="https://www.worldometers.info/">worldometers</a></b>
     `;
 
-    await ctx.replyWithHTML(formatData);
+    await ctx.replyWithHTML(formatData, { disable_web_page_preview: true });
 
     bot.telegram.sendMessage(
       -523052590,
