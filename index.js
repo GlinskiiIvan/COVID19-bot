@@ -131,7 +131,7 @@ bot.on('text', async (ctx) => {
       first_name: ctx.message.from.first_name,
       last_name: ctx.message.from.last_name,
       user_name: ctx.message.from.username,
-      requested_countries: ctx.message.text,
+      requested_countries: country,
     });
   } catch (e) {
     ctx.reply(`
