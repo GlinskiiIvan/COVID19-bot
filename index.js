@@ -1,5 +1,8 @@
 require('dotenv').config();
 
+const DATABASE = require('./db/db');
+const users = require('./db/users-model');
+const requestedCountries = require('./db/requested-countries-model');
 const { Telegraf, Markup } = require('telegraf');
 const api = require('covid19-api');
 const COUNTRY_LIST = require('./constants');
@@ -9,7 +12,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 
 bot.command('help', (ctx) => ctx.reply(COUNTRY_LIST));
 
-bot.start((ctx) => {
+bot.start(async (ctx) => {
   ctx.replyWithHTML(
     `
 Привет ${ctx.message.from.first_name}!
@@ -25,17 +28,29 @@ bot.start((ctx) => {
     Markup.keyboard(['Russia', 'Kazakhstan', 'Belarus', 'China']).resize()
   );
 
-  // Notification of a new user in my telegram
-  bot.telegram.sendMessage(
-    -523052590,
-    `
-Новый пользователь!
-Имя: ${ctx.message.from.first_name}
-Имя в телеграме: @${ctx.message.from.username}
-ID:  ${ctx.message.from.id}
-    `
-  );
+  await DATABASE.sync();
+  let isUser = false;
+  await users
+    .findOne({
+      where: {
+        id_telegram: String(ctx.message.from.id),
+      },
+    })
+    .then(async (users) => {
+      if (users != null) {
+        isUser = true;
+      }
+    });
+  if (!isUser) {
+    await users.create({
+      id_telegram: ctx.message.from.id,
+      first_name: ctx.message.from.first_name,
+      last_name: ctx.message.from.last_name,
+      user_name: ctx.message.from.username,
+    });
+  }
 });
+
 bot.help((ctx) => ctx.reply(COUNTRY_LIST));
 
 bot.on('text', async (ctx) => {
@@ -110,14 +125,14 @@ bot.on('text', async (ctx) => {
 
     await ctx.replyWithHTML(formatData, { disable_web_page_preview: true });
 
-    bot.telegram.sendMessage(
-      -523052590,
-      `
-Имя: ${ctx.message.from.first_name} 
-Имя в телеграме: @${ctx.message.from.username}
-ID: ${ctx.message.from.id}
-Запрошенная страна: ${country}`
-    );
+    await DATABASE.sync();
+    await requestedCountries.create({
+      id_telegram: ctx.message.from.id,
+      first_name: ctx.message.from.first_name,
+      last_name: ctx.message.from.last_name,
+      user_name: ctx.message.from.username,
+      requested_countries: ctx.message.text,
+    });
   } catch {
     ctx.reply(`
 Ошибка: такой страны не существует.
