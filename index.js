@@ -133,11 +133,12 @@ bot.on('text', async (ctx) => {
       user_name: ctx.message.from.username,
       requested_countries: ctx.message.text,
     });
-  } catch {
+  } catch (e) {
     ctx.reply(`
 Ошибка: такой страны не существует.
 Используйте команду /help для просмотра списка стран.
 `);
+    console.log(e);
     console.log('Ошибка');
   }
 });
