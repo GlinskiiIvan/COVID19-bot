@@ -7,6 +7,7 @@ const { Telegraf, Markup } = require('telegraf');
 const api = require('covid19-api');
 const COUNTRY_LIST = require('./constants');
 const { flag, name } = require('country-emoji');
+const translate = require('@iamtraction/google-translate');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -56,7 +57,7 @@ bot.help((ctx) => ctx.reply(COUNTRY_LIST));
 bot.on('text', async (ctx) => {
   let worldData = {};
   let tableCountrys = {};
-  let country;
+  let country = (await translate(ctx.message.text, { from: 'ru', to: 'en' })).text;
   let flagEmoji;
   let DataNewCases;
   let DataNewDeaths;
@@ -70,10 +71,7 @@ bot.on('text', async (ctx) => {
   try {
     if (name(ctx.message.text) != undefined) {
       country = name(ctx.message.text);
-    } else {
-      country = ctx.message.text;
     }
-
     flagEmoji = await flag(country);
     flagEmoji = flagEmoji == undefined ? '-' : flagEmoji;
 
@@ -104,6 +102,8 @@ bot.on('text', async (ctx) => {
     DataPopulation = await tableCountrys.find(
       (item) => item.Country.toLowerCase() === country.toLowerCase()
     ).Population;
+
+    country = (await translate(country, { from: 'en', to: 'ru' })).text;
 
     let formatData = `
 Страна: ${country} ${flagEmoji}
