@@ -6,14 +6,18 @@ const requestedCountries = require('./db/requested-countries-model');
 const { Telegraf, Markup } = require('telegraf');
 const api = require('covid19-api');
 const COUNTRY_LIST_EN = require('./country-list-en');
-const COUNTRY_LIST_RU = require('./country-list-ru')
+const COUNTRY_LIST_RU = require('./country-list-ru');
 const { flag, name } = require('country-emoji');
 const translate = require('@iamtraction/google-translate');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-bot.command('help_en', async (ctx)=>{ctx.reply(COUNTRY_LIST_EN)})
-bot.command('help_ru', async (ctx)=>{ctx.reply(COUNTRY_LIST_RU)})
+bot.command('help_en', async (ctx) => {
+  ctx.reply(COUNTRY_LIST_EN);
+});
+bot.command('help_ru', async (ctx) => {
+  ctx.reply(COUNTRY_LIST_RU);
+});
 
 bot.start(async (ctx) => {
   ctx.replyWithHTML(
@@ -28,7 +32,7 @@ bot.start(async (ctx) => {
 Вся информация взята с сайта <b><a href="https://www.worldometers.info/">worldometers</a></b>
 `,
     { disable_web_page_preview: true },
-    Markup.keyboard(['Russia', 'Kazakhstan', 'Belarus', 'China']).resize()
+    Markup.keyboard(['Россия', 'Казахстан', 'Беларусь', 'Китай']).resize()
   );
 
   await DATABASE.sync();
