@@ -1,4 +1,5 @@
 const COUNTRY_LIST = `
+
 Afghanistan, Albania, Algeria, Andorra, Angola, Anguilla, Antigua and Barbuda, Argentina, Armenia, Aruba, Australia, Austria, Azerbaijan
 
 Bahamas, Bahrain, Bangladesh, Barbados, Belarus, Belgium, Belize, Benin, Bermuda, Bhutan, Bolivia, Bosnia and Herzegovina, Botswana, Brazil, British Virgin Islands, Brunei, Bulgaria, Burkina Faso, Burundi
@@ -7,7 +8,9 @@ CAR, Cabo Verde, Cambodia, Cameroon, Canada, Caribbean Netherlands, Cayman Islan
 
 DRC, Denmark, Diamond Princess, Djibouti, Dominica, Dominican Republic
 
-Ecuador, Egypt, El Salvador, Equatorial Guinea, Eritrea, Estonia, Eswatini, Ethiopia, Faeroe Islands, Falkland Islands, Fiji, Finland, France, French Guiana, French Polynesia
+Ecuador, Egypt, El Salvador, Equatorial Guinea, Eritrea, Estonia, Eswatini, Ethiopia
+
+Faeroe Islands, Falkland Islands, Fiji, Finland, France, French Guiana, French Polynesia
 
 Gabon, Gambia, Georgia, Germany, Ghana, Gibraltar, Greece, Greenland, Grenada, Guadeloupe, Guatemala, Guinea, Guinea-Bissau, Guyana
 

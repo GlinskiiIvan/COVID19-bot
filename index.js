@@ -5,13 +5,15 @@ const users = require('./db/users-model');
 const requestedCountries = require('./db/requested-countries-model');
 const { Telegraf, Markup } = require('telegraf');
 const api = require('covid19-api');
-const COUNTRY_LIST = require('./constants');
+const COUNTRY_LIST_EN = require('./country-list-en');
+const COUNTRY_LIST_RU = require('./country-list-ru')
 const { flag, name } = require('country-emoji');
 const translate = require('@iamtraction/google-translate');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-bot.command('help', (ctx) => ctx.reply(COUNTRY_LIST));
+bot.command('help_en', async (ctx)=>{ctx.reply(COUNTRY_LIST_EN)})
+bot.command('help_ru', async (ctx)=>{ctx.reply(COUNTRY_LIST_RU)})
 
 bot.start(async (ctx) => {
   ctx.replyWithHTML(
@@ -19,8 +21,8 @@ bot.start(async (ctx) => {
 Привет ${ctx.message.from.first_name}!
 
 Узнай статистику по COVID-19.
-Для этого надо ввести название интересующей страны на английском или отправить emoji флаг(поддерживаются не все флаги поэтому лучше отправляй текст).
-Посмотреть список всех стран можно с помощью команды /help.
+Для этого надо ввести название интересующей страны на русском или английском, или отправить emoji флаг(поддерживаются не все флаги поэтому лучше отправляй текст).
+Посмотреть список всех стран можно с помощью команды /help_ru (русский) или /help_en (english).
 Из-за обработки большого количества информации ответ может приходить с небольшой задержкой)
 
 Вся информация взята с сайта <b><a href="https://www.worldometers.info/">worldometers</a></b>
@@ -51,8 +53,6 @@ bot.start(async (ctx) => {
     });
   }
 });
-
-bot.help((ctx) => ctx.reply(COUNTRY_LIST));
 
 bot.on('text', async (ctx) => {
   let worldData = {};
@@ -136,7 +136,7 @@ bot.on('text', async (ctx) => {
   } catch (e) {
     ctx.reply(`
 Ошибка: такой страны не существует.
-Используйте команду /help для просмотра списка стран.
+Используйте команду /help_ru (русский) или /help_en (english) для просмотра списка стран.
 `);
     console.log(e);
     console.log('Ошибка');
